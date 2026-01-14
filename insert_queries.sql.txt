@@ -1,0 +1,64 @@
+---------------------------------------------------------
+-- 1. Student Attendance Percentage
+---------------------------------------------------------
+
+with student_record as(select sa.student_id,s.student_name,
+count(sa.attendance_id) as total,count(case when sa.status in ('Present', 'Late')
+then 1  end) as total_present_days,
+count(case when sa.status = 'Absent' then 1  end) as 
+total_absent_days from students s join student_attendance sa
+on s.student_id = sa.student_id group by sa.student_id,s.student_name)
+select student_id,student_name,round((total_present_days:: numeric /total)*100,2) as percentage
+from student_record order by percentage desc;
+
+
+---------------------------------------------------------
+-- 2. Top 5 Students by Average Marks
+---------------------------------------------------------
+
+
+select s.student_name,s.student_id,round(avg(m.marks_obtained/m.total_marks * 100),2) 
+as avg_marks from students s join marks m on s.student_id = m.student_id
+group by s.student_name,s.student_id
+order by avg_marks desc limit 5; 
+
+
+---------------------------------------------------------
+-- 3. Teacher Salary Calculation Based on Attendance
+--    (Late = 0.5 Day Salary)
+---------------------------------------------------------
+
+
+
+with cte as (select t.teacher_name,t.teacher_id,t.salary_per_day,count(case when
+ta.status = 'Present' then 1 end)
+as total_present_days, count(case when ta.status = 'Late' then 1 end) as total_late_days
+from teachers t join teacher_attendance ta on t.teacher_id = ta.teacher_id
+group by t.teacher_name,t.teacher_id,t.salary_per_day)
+select *,round((total_present_days + 0.5 * total_late_days) * salary_per_day,2) as
+total_salary from cte;
+
+
+
+---------------------------------------------------------
+-- 4. Students With Percentage Below 40%
+---------------------------------------------------------
+
+
+select s.student_id,s.student_name,m.subject_id,m.marks_obtained,m.total_marks,
+round(m.marks_obtained/m.total_marks * 100,2) as percentage from students s join marks m 
+on s.student_id = m.student_id 
+WHERE round(m.marks_obtained/ m.total_marks * 100, 2) < 40
+ORDER BY percentage ASC;
+
+
+
+---------------------------------------------------------
+-- 5. Students Absent More Than 3 Times in January 2024
+---------------------------------------------------------
+
+select s.student_id,s.student_name,count(*) as 
+total_absent_days from students s join student_attendance sa on 
+s.student_id = sa.student_id where sa.status = 'Absent' and sa.date between '2024-01-01'
+and '2024-01-31'group by s.student_id,s.student_name having count(*) > 3
+order by total_absent_days desc;

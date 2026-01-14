@@ -1,0 +1,77 @@
+create table classes(
+class_id int primary key,
+class_name varchar(20) not null,
+class_section varchar(10) not null
+);
+
+
+CREATE TABLE students (
+    student_id INT  PRIMARY KEY,
+    student_name VARCHAR(50) NOT NULL,
+    class_id INT,
+    section VARCHAR(5),
+    gender VARCHAR(10),
+    date_of_birth DATE,
+    parent_contact VARCHAR(20),
+    FOREIGN KEY (class_id) REFERENCES classes(class_id)
+);
+
+
+
+CREATE TABLE subjects (
+    subject_id INT  PRIMARY KEY,
+    subject_name VARCHAR(30) NOT NULL,
+    class_id INT,
+    FOREIGN KEY (class_id) REFERENCES classes(class_id)
+);
+
+CREATE TABLE teachers (
+    teacher_id INT  PRIMARY KEY,
+    teacher_name VARCHAR(50) NOT NULL,
+    subject_id INT,
+    salary_per_day DECIMAL(10,2),
+    joining_date DATE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+);
+
+
+CREATE TABLE student_attendance (
+    attendance_id INT  PRIMARY KEY,
+    student_id INT,
+    date DATE,
+    status varchar (20),
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+);
+
+
+CREATE TABLE teacher_attendance (
+    attendance_id INT  PRIMARY KEY,
+    teacher_id INT,
+    date DATE,
+    status varchar(20),
+    FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id)
+);
+
+
+
+CREATE TABLE fees (
+    fee_id INT  PRIMARY KEY,
+    student_id INT,
+    month VARCHAR(20),
+    amount DECIMAL(10,2),
+    status varchar(20),
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+);
+
+
+
+CREATE TABLE marks (
+    mark_id INT  PRIMARY KEY,
+    student_id INT,
+    subject_id INT,
+    marks_obtained INT,
+    total_marks INT,
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id)
+);
+

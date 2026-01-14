@@ -1,0 +1,47 @@
+-- Load classes.csv
+COPY classes (class_id, class_name, section)
+FROM 'C:/Users/HP/Downloads/classes.csv'
+DELIMITER ','
+CSV HEADER;
+
+-- Load students.csv
+COPY students (student_id, student_name, class_id, gender, age)
+FROM 'C:/Users/HP/Downloads/students.csv'
+DELIMITER ','
+CSV HEADER;
+
+-- Load subjects.csv
+COPY subjects (subject_id, subject_name)
+FROM 'C:/Users/HP/Downloads/subjects.csv'
+DELIMITER ','
+CSV HEADER;
+
+-- Load teachers.csv
+COPY teachers (teacher_id, teacher_name, subject_id, salary_per_day)
+FROM 'C:/Users/HP/Downloads/teachers.csv'
+DELIMITER ','
+CSV HEADER;
+
+-- Load marks.csv
+COPY marks (mark_id, student_id, subject_id, marks_obtained, total_marks)
+FROM 'C:/Users/HP/Downloads/marks.csv'
+DELIMITER ','
+CSV HEADER;
+
+-- Load student_attendance.csv
+COPY student_attendance (attendance_id, student_id, date, status)
+FROM 'C:/Users/HP/Downloads/student_attendance.csv'
+DELIMITER ','
+CSV HEADER;
+
+-- Load teacher_attendance.csv
+COPY teacher_attendance (attendance_id, teacher_id, date, status)
+FROM 'C:/Users/HP/Downloads/teacher_attendance.csv'
+DELIMITER ','
+CSV HEADER;
+
+-- Load fees.csv
+COPY fees (fee_id, student_id, amount, date_paid)
+FROM 'C:/Users/HP/Downloads/fees.csv'
+DELIMITER ','
+CSV HEADER;
